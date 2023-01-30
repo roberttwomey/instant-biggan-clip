@@ -1,15 +1,13 @@
 FROM gitlab-registry.nrp-nautilus.io/prp/jupyter-stack/prp:latest
 LABEL authors="ayunami2000"
 
-ARG CONDA_ENV_NAME=torch-gpu-clip
-
 COPY environment.yml /tmp/environment.yml
 # RUN perl -ne 'm/(?:\n|^)name: +([^\n]+)/ && print "$1"' /tmp/environment.yml
 RUN conda env create -f /tmp/environment.yml
 
-SHELL ["conda", "run", "--no-capture-output", "-n", "${CONDA_ENV_NAME}", "/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/opt/conda/bin/conda", "run", "--no-capture-output", "-n", "torch-gpu-clip", "/bin/bash", "-o", "pipefail", "-c"]
 
-RUN python -m ipykernel install --user --name "${CONDA_ENV_NAME}" --display-name "Python (${CONDA_ENV_NAME})"
+RUN python -m ipykernel install --user --name "torch-gpu-clip" --display-name "Python (torch-gpu-clip)"
 
 EXPOSE 8080
 
