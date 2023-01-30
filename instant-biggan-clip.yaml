@@ -18,7 +18,6 @@ spec:
       containers:
       - name: instant-biggan-clip
         image: gitlab-registry.nrp-nautilus.io/ml-imagination/instant-biggan-clip:latest
-#        command: ["sleep", "infinity"]
         ports:
         - name: http
           containerPort: 8080
