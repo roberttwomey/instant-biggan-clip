@@ -18,6 +18,7 @@ spec:
       containers:
       - name: instant-biggan-clip
         image: gitlab-registry.nrp-nautilus.io/ml-imagination/instant-biggan-clip:latest
+#        command: ["sleep", "infinity"]
         ports:
         - name: http
           containerPort: 8080
@@ -30,33 +31,19 @@ spec:
               key: password
         resources:
           requests:
-            nvidia.com/gpu: 2
+            nvidia.com/gpu: 0
             cpu: "2"
             memory: "12Gi"
           limits:
-            nvidia.com/gpu: 2
+            nvidia.com/gpu: 0
             cpu: "2"
             memory: "12Gi"
         volumeMounts:
-        - name: ekphrasis2-persistent-storage
-          mountPath: /home/jovyan/work
         - name: dshm
           mountPath: /dev/shm
       imagePullSecrets: 
-      - name: registry-credentials
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: nvidia.com/gpu.product
-                operator: In
-                values:
-                  - NVIDIA-RTX-A6000
+      - name: registry-credentials-ibc
       volumes:
-        - name: ekphrasis2-persistent-storage
-          persistentVolumeClaim:
-            claimName: ekphrasis2-pv-claim
         - name: dshm
           emptyDir:
             medium: Memory
