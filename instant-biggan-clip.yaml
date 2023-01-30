@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: instant-biggan-clip
+  labels:
+    app: instant-biggan-clip
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: instant-biggan-clip
+  template:
+    metadata:
+      labels:
+        app: instant-biggan-clip
+    spec:
+      hostname: instant-biggan-clip
+      containers:
+      - name: instant-biggan-clip
+        image: gitlab-registry.nrp-nautilus.io/ml-imagination/instant-biggan-clip:latest
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: ayuns-pass
+              key: password
+        resources:
+          requests:
+            nvidia.com/gpu: 2
+            cpu: "2"
+            memory: "12Gi"
+          limits:
+            nvidia.com/gpu: 2
+            cpu: "2"
+            memory: "12Gi"
+        volumeMounts:
+        - name: ekphrasis2-persistent-storage
+          mountPath: /home/jovyan/work
+        - name: dshm
+          mountPath: /dev/shm
+      imagePullSecrets: 
+      - name: registry-credentials
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.product
+                operator: In
+                values:
+                  - NVIDIA-RTX-A6000
+      volumes:
+        - name: ekphrasis2-persistent-storage
+          persistentVolumeClaim:
+            claimName: ekphrasis2-pv-claim
+        - name: dshm
+          emptyDir:
+            medium: Memory
