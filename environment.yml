@@ -1,6 +1,7 @@
 name: torch-gpu-clip
 channels:
   - pytorch
+  - hcc
 dependencies:
   - python >= 3.8
   - pip
