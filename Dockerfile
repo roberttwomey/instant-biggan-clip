@@ -9,4 +9,4 @@ RUN conda run --no-capture-output -n "torch-gpu-clip" python -m ipykernel instal
 
 EXPOSE 8080
 
-ENTRYPOINT ["/bin/bash", "-o", "pipefail", "-c", "jupyter lab --port 8080 --no-browser --ip 0.0.0.0 --NotebookApp.password \"$(echo ${PASSWD:-mypasswd} | python -c 'from notebook.auth import passwd;print(passwd(input()))')\""]
+ENTRYPOINT ["/bin/bash", "-o", "pipefail", "-c", "source activate torch-gpu-clip && jupyter lab --port 8080 --no-browser --ip 0.0.0.0 --NotebookApp.password \"$(echo ${PASSWD:-mypasswd} | python -c 'from notebook.auth import passwd;print(passwd(input()))')\""]

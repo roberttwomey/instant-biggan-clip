@@ -14,6 +14,7 @@ dependencies:
   - cma
   - imageio
   - ipykernel
+  - scipy
   - pip:
     - git+https://github.com/openai/CLIP.git
     - pytorch-pretrained-biggan
