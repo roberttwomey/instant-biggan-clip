@@ -23,7 +23,7 @@ spec:
           containerPort: 8080
           protocol: TCP
         env:
-        - name: PASSWD
+        - name: HASHED_PASSWD
           valueFrom:
             secretKeyRef:
               name: my-pass
