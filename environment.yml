@@ -1,9 +1,14 @@
 name: torch-gpu-clip
 channels:
   - pytorch
+  - nvidia
 dependencies:
   - python >= 3.8
   - pip
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=11.6
   - ftfy
   - regex
   - tqdm
