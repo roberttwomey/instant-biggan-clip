@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  instant-biggan-clip:
+    build:
+      context: .
+      dockerfile: Dockerfile.jetson
+    container_name: instant-biggan-clip-jetson
+    ports:
+      - "8080:8080"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      # Mount workspace for persistent storage
+      - ./workspace:/home/jovyan/work
+      # Mount shared memory for better performance
+      - /dev/shm:/dev/shm
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    # Ensure container runs with proper permissions
+    user: "1000:1000"
+    # Restart policy
+    restart: unless-stopped
+    # Network mode for better performance
+    network_mode: host

@@ -1,0 +1,35 @@
+name: torch-gpu-clip
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python >= 3.8
+  - pip
+  # PyTorch for ARM64 with CUDA support
+  - pytorch
+  - torchvision
+  - torchaudio
+  # CUDA toolkit for Jetson (compatible with JetPack)
+  - cudatoolkit=11.4
+  # Core dependencies
+  - ftfy
+  - regex
+  - tqdm
+  - git
+  - nltk
+  - cma
+  - imageio
+  - ipykernel
+  - scipy
+  - numpy
+  - pillow
+  - matplotlib
+  - pip:
+    # CLIP from OpenAI
+    - git+https://github.com/openai/CLIP.git
+    # BigGAN pretrained models
+    - pytorch-pretrained-biggan
+    # Additional useful packages
+    - transformers
+    - accelerate
