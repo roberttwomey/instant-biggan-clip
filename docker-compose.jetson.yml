@@ -16,13 +16,7 @@ services:
       - ./workspace:/home/jovyan/work
       # Mount shared memory for better performance
       - /dev/shm:/dev/shm
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    runtime: nvidia
     # Ensure container runs with proper permissions
     user: "1000:1000"
     # Restart policy

@@ -51,10 +51,10 @@ mkdir -p workspace
 3. **Build and run with Docker Compose:**
 ```bash
 # Build and start the container
-docker-compose -f docker-compose.jetson.yml up --build
+docker compose -f docker-compose.jetson.yml up --build
 
 # Or run in detached mode
-docker-compose -f docker-compose.jetson.yml up --build -d
+docker compose -f docker-compose.jetson.yml up --build -d
 ```
 
 4. **Access Jupyter Lab:**
@@ -70,13 +70,15 @@ docker build -f Dockerfile.jetson -t instant-biggan-clip:jetson .
 
 2. **Run the container:**
 ```bash
-docker run --gpus all \
+docker run --runtime=nvidia \
   --name instant-biggan-clip-jetson \
   -p 8080:8080 \
   -v $(pwd)/workspace:/home/jovyan/work \
   -v /dev/shm:/dev/shm \
   --user 1000:1000 \
   --restart unless-stopped \
+  -e NVIDIA_VISIBLE_DEVICES=all \
+  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
   instant-biggan-clip:jetson
 ```
 
@@ -116,7 +118,7 @@ print(f"Device name: {torch.cuda.get_device_name()}")
 
 1. **CUDA not detected:**
    - Ensure NVIDIA Container Toolkit is installed
-   - Check that `--gpus all` flag is used
+   - Check that `--runtime=nvidia` flag is used (not `--gpus all`)
    - Verify JetPack installation
 
 2. **Out of memory errors:**
@@ -155,7 +157,7 @@ docker stats instant-biggan-clip-jetson
 
 ```bash
 # Using Docker Compose
-docker-compose -f docker-compose.jetson.yml down
+docker compose -f docker-compose.jetson.yml down
 
 # Using Docker directly
 docker stop instant-biggan-clip-jetson
